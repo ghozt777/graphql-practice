@@ -12,21 +12,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RegisterInput = void 0;
 const class_validator_1 = require("class-validator");
 const type_graphql_1 = require("type-graphql");
+const isEmailThere_1 = require("./isEmailThere");
 let RegisterInput = class RegisterInput {
 };
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, class_validator_1.Length)(1, 30),
+    (0, class_validator_1.Length)(1, 30, {
+        message: "Can't create a name with less than 1 word or more than 30 words",
+    }),
     __metadata("design:type", String)
 ], RegisterInput.prototype, "name", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, class_validator_1.IsEmail)(),
+    (0, isEmailThere_1.IsEmailAlreadyExist)({ message: "email already is use" }),
     __metadata("design:type", String)
 ], RegisterInput.prototype, "email", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, class_validator_1.MinLength)(8),
+    (0, class_validator_1.MinLength)(8, {
+        message: "Passwords with less than 8 letters not allowed",
+    }),
     __metadata("design:type", String)
 ], RegisterInput.prototype, "password", void 0);
 RegisterInput = __decorate([

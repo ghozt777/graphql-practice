@@ -19,7 +19,6 @@ const main = async () => {
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: await (0, type_graphql_1.buildSchema)({
             resolvers: [hello_1.HelloResolver, posts_1.PostResolver, cat_1.CatResolver, user_1.UserResolver],
-            validate: false,
         }),
     });
     await apolloServer.start();
