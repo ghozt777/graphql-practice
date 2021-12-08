@@ -20,12 +20,13 @@ const user_model_1 = require("../models/user.model");
 const user_gql_1 = require("../graphql/user.gql");
 const type_graphql_1 = require("type-graphql");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const registerInput_1 = require("./args/registerInput");
 let UserResolver = class UserResolver {
     async users() {
         const users = await user_model_1.user.find({});
         return users;
     }
-    async register(name, email, password) {
+    async register({ name, email, password }) {
         const hashedPassword = await bcryptjs_1.default.hash(password, 12);
         const savedUser = new user_model_1.user({
             name,
@@ -43,11 +44,9 @@ __decorate([
 ], UserResolver.prototype, "users", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => user_gql_1.User),
-    __param(0, (0, type_graphql_1.Arg)("name")),
-    __param(1, (0, type_graphql_1.Arg)("email")),
-    __param(2, (0, type_graphql_1.Arg)("password")),
+    __param(0, (0, type_graphql_1.Arg)("data")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:paramtypes", [registerInput_1.RegisterInput]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "register", null);
 UserResolver = __decorate([
