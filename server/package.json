@@ -27,11 +27,12 @@
     "@mikro-orm/mongodb": "^4.5.9",
     "@mikro-orm/postgresql": "^4.5.9",
     "apollo-server": "^3.5.0",
+    "bcryptjs": "^2.4.3",
     "class-validator": "^0.13.2",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "graphql": "15.3.0",
-    "mongoose": "^6.0.14",
+    "mongoose": "^6.1.0",
     "pg": "^8.7.1",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1"

@@ -1,21 +1,11 @@
 import {
   Arg,
-  Field,
-  ID,
   Mutation,
-  ObjectType,
   Resolver,
   Query,
 } from "type-graphql";
 import { cat } from "../models/cat.model";
-@ObjectType()
-class Cat {
-  @Field(() => ID)
-  id: String;
-
-  @Field()
-  name: String;
-}
+import { Cat } from '../graphql/cat.gql'
 
 @Resolver()
 export class CatResolver {

@@ -9,49 +9,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostResolver = void 0;
+exports.Cat = void 0;
 const type_graphql_1 = require("type-graphql");
-let Post = class Post {
+let Cat = class Cat {
 };
+__decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.ID),
+    __metadata("design:type", String)
+], Cat.prototype, "id", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     __metadata("design:type", String)
-], Post.prototype, "name", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(),
-    __metadata("design:type", Number)
-], Post.prototype, "_id", void 0);
+], Cat.prototype, "name", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => Date),
-    __metadata("design:type", Date)
-], Post.prototype, "date", void 0);
+    __metadata("design:type", String)
+], Cat.prototype, "created_at", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => Boolean),
-    __metadata("design:type", Boolean)
-], Post.prototype, "flag", void 0);
-Post = __decorate([
+    (0, type_graphql_1.Field)(() => Date),
+    __metadata("design:type", String)
+], Cat.prototype, "updated_at", void 0);
+Cat = __decorate([
     (0, type_graphql_1.ObjectType)()
-], Post);
-let PostResolver = class PostResolver {
-    posts() {
-        return [
-            {
-                name: "This is a test",
-                _id: 1234,
-                date: new Date(),
-                flag: false,
-            },
-        ];
-    }
-};
-__decorate([
-    (0, type_graphql_1.Query)(() => [Post]),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Array)
-], PostResolver.prototype, "posts", null);
-PostResolver = __decorate([
-    (0, type_graphql_1.Resolver)()
-], PostResolver);
-exports.PostResolver = PostResolver;
-//# sourceMappingURL=posts.js.map
+], Cat);
+exports.Cat = Cat;
+//# sourceMappingURL=cat.gql.js.map

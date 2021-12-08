@@ -1,6 +1,5 @@
 require("dotenv").config();
 import connectToDB from "./config/db.connect";
-connectToDB();
 
 import "reflect-metadata";
 import express from "express";
@@ -9,12 +8,14 @@ import { buildSchema } from "type-graphql";
 import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/posts";
 import { CatResolver } from "./resolvers/cat";
+import { UserResolver } from "./resolvers/user";
 
 const main = async () => {
+  connectToDB();
   const app = express();
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, PostResolver, CatResolver],
+      resolvers: [HelloResolver, PostResolver, CatResolver, UserResolver],
       validate: false,
     }),
   });

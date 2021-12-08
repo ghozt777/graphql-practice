@@ -15,19 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CatResolver = void 0;
 const type_graphql_1 = require("type-graphql");
 const cat_model_1 = require("../models/cat.model");
-let Cat = class Cat {
-};
-__decorate([
-    (0, type_graphql_1.Field)(() => type_graphql_1.ID),
-    __metadata("design:type", String)
-], Cat.prototype, "id", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(),
-    __metadata("design:type", String)
-], Cat.prototype, "name", void 0);
-Cat = __decorate([
-    (0, type_graphql_1.ObjectType)()
-], Cat);
+const cat_gql_1 = require("../graphql/cat.gql");
 let CatResolver = class CatResolver {
     async createCat(name) {
         const createdCat = new cat_model_1.cat({ name });
@@ -40,14 +28,14 @@ let CatResolver = class CatResolver {
     }
 };
 __decorate([
-    (0, type_graphql_1.Mutation)(() => Cat),
+    (0, type_graphql_1.Mutation)(() => cat_gql_1.Cat),
     __param(0, (0, type_graphql_1.Arg)("name")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], CatResolver.prototype, "createCat", null);
 __decorate([
-    (0, type_graphql_1.Query)(() => [Cat]),
+    (0, type_graphql_1.Query)(() => [cat_gql_1.Cat]),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

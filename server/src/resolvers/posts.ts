@@ -1,4 +1,3 @@
-import { PostType } from "src/config/types/posts.type";
 import { Field, ObjectType, Query, Resolver } from "type-graphql";
 
 @ObjectType()
@@ -10,7 +9,7 @@ class Post {
   _id: number;
 
   @Field(() => Date) // for some datatype like Date we need to mention the type
-  date: String;
+  date: Date;
 
   @Field(() => Boolean)
   flag: boolean;
@@ -19,7 +18,7 @@ class Post {
 @Resolver()
 export class PostResolver {
   @Query(() => [Post])
-  posts(): Array<PostType> {
+  posts(): Array<Post> {
     return [
       {
         name: "This is a test",
