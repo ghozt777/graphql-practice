@@ -26,6 +26,19 @@ let CatResolver = class CatResolver {
         const cats = await cat_model_1.cat.find({});
         return cats;
     }
+    async delete(id) {
+        try {
+            const toDelete = await cat_model_1.cat.findById(id);
+            await toDelete.delete();
+            return "successful deletion";
+        }
+        catch (e) {
+            let message = "unknown error";
+            if (e instanceof Error)
+                message = e.message;
+            return "Deletion unsuccessful : " + message;
+        }
+    }
 };
 __decorate([
     (0, type_graphql_1.Mutation)(() => cat_gql_1.Cat),
@@ -40,6 +53,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], CatResolver.prototype, "getCats", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => String),
+    __param(0, (0, type_graphql_1.Arg)("id")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], CatResolver.prototype, "delete", null);
 CatResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], CatResolver);

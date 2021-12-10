@@ -1,11 +1,6 @@
-import {
-  Arg,
-  Mutation,
-  Resolver,
-  Query,
-} from "type-graphql";
+import { Arg, Mutation, Resolver, Query } from "type-graphql";
 import { cat } from "../models/cat.model";
-import { Cat } from '../graphql/cat.gql'
+import { Cat } from "../graphql/cat.gql";
 
 @Resolver()
 export class CatResolver {
@@ -20,5 +15,18 @@ export class CatResolver {
   async getCats() {
     const cats = await cat.find({});
     return cats;
+  }
+
+  @Mutation(() => String)
+  async delete(@Arg("id") id: string): Promise<string> {
+    try {
+      const toDelete = await cat.findById(id);
+      await toDelete.delete();
+      return "successful deletion";
+    } catch (e) {
+      let message = "unknown error";
+      if (e instanceof Error) message = e.message;
+      return "Deletion unsuccessful : " + message;
+    }
   }
 }
