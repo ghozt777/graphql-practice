@@ -3,6 +3,7 @@ import connectToDB from "./config/db.connect";
 import cors from "cors";
 import "reflect-metadata";
 import express from "express";
+import { __prod__ } from "./constraints";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { HelloResolver } from "./resolvers/hello";
@@ -11,7 +12,7 @@ import { CatResolver } from "./resolvers/cat";
 import { UserResolver } from "./resolvers/user";
 import { LoginResolver } from "./resolvers/login";
 import { MeResolver } from "./resolvers/me";
-import { createClient } from "redis";
+import Redis from "ioredis";
 import session from "express-session";
 import connectRedis from "connect-redis";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
@@ -19,14 +20,12 @@ import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-co
 const main = async () => {
   connectToDB();
   const app = express();
-
   const RedisStore = connectRedis(session as any);
-  const redisClient = createClient();
-
+  const redis = new Redis();
   app.use(
     session({
       name: "qid", // name of the cookie
-      store: new RedisStore({ client: redisClient, disableTouch: true }) as any,
+      store: new RedisStore({ client: redis, disableTouch: true }) as any,
       saveUninitialized: false,
       secret: "keyboard cat",
       resave: false,
@@ -34,7 +33,7 @@ const main = async () => {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
         sameSite: "lax",
         httpOnly: true,
-        secure: false,
+        secure: __prod__,
       },
     })
   );

@@ -8,7 +8,6 @@ const db_connect_1 = __importDefault(require("./config/db.connect"));
 const cors_1 = __importDefault(require("cors"));
 require("reflect-metadata");
 const express_1 = __importDefault(require("express"));
-const constraints_1 = require("./constraints");
 const apollo_server_express_1 = require("apollo-server-express");
 const type_graphql_1 = require("type-graphql");
 const hello_1 = require("./resolvers/hello");
@@ -36,7 +35,7 @@ const main = async () => {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
             sameSite: "lax",
             httpOnly: true,
-            secure: constraints_1.__prod__,
+            secure: false,
         },
     }));
     app.use((0, cors_1.default)({
