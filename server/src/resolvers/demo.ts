@@ -4,6 +4,6 @@ import { Arg, Mutation, Query, Resolver } from "type-graphql";
 export class DemoResolver {
   @Mutation(() => String)
   getLaid(@Arg("name") name: string): string {
-    return name + "sike u aint never gettin laid bitch !";
+    return "sike u aint ever gettin laid bitch !";
   }
 }

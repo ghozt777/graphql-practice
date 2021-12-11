@@ -16,7 +16,7 @@ exports.DemoResolver = void 0;
 const type_graphql_1 = require("type-graphql");
 let DemoResolver = class DemoResolver {
     getLaid(name) {
-        return name + "sike u aint never gettin laid bitch !";
+        return "sike u aint ever gettin laid bitch !";
     }
 };
 __decorate([
