@@ -4,7 +4,7 @@
 
 ### scripts :
 
-- To Start in Dev Mode using the JS compiler version using nodemon (recommended)
+- To Start in Dev Mode using the JS compiled version using nodemon (recommended)
 
 ```
     yarn dev
