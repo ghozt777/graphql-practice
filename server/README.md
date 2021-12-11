@@ -1,6 +1,6 @@
 # Mutation is my middle name
 
-![bitch](./server/assets/demo_new.png)
+![bitch](./assets/demo_new.png)
 
 ### scripts :
 
