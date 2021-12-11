@@ -33,3 +33,25 @@
 ```
     yarn start
 ```
+
+### Redis Commands :
+
+- To Start server
+
+```
+    redis-server
+```
+
+- To view all the sessions that are stored :
+
+1. Open Redis CLI
+
+```
+    redis-cli
+```
+
+2. Get the keys :
+
+```
+    keys *
+```
