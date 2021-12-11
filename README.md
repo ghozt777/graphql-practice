@@ -10,7 +10,7 @@
     yarn dev
 ```
 
-- TSC Compiler in Watch Mode using nodemon (recommended)
+- To Run TSC Compiler in Watch Mode (recommended)
 
 ```
     yarn watch
