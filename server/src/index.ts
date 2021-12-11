@@ -16,6 +16,7 @@ import Redis from "ioredis";
 import session from "express-session";
 import connectRedis from "connect-redis";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
+import { DemoResolver } from "./resolvers/Demo";
 
 const main = async () => {
   connectToDB();
@@ -55,6 +56,7 @@ const main = async () => {
         UserResolver,
         LoginResolver,
         MeResolver,
+        DemoResolver
       ],
     }),
     context: ({ req, res }) => ({ req, res }),

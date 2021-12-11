@@ -21,6 +21,7 @@ const ioredis_1 = __importDefault(require("ioredis"));
 const express_session_1 = __importDefault(require("express-session"));
 const connect_redis_1 = __importDefault(require("connect-redis"));
 const apollo_server_core_1 = require("apollo-server-core");
+const Demo_1 = require("./resolvers/Demo");
 const main = async () => {
     (0, db_connect_1.default)();
     const app = (0, express_1.default)();
@@ -53,6 +54,7 @@ const main = async () => {
                 user_1.UserResolver,
                 login_1.LoginResolver,
                 me_1.MeResolver,
+                Demo_1.DemoResolver
             ],
         }),
         context: ({ req, res }) => ({ req, res }),
