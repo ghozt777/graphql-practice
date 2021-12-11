@@ -20,6 +20,7 @@
     "@types/express-session": "1.17.0",
     "@types/ioredis": "^4.28.3",
     "@types/node": "^16.11.11",
+    "@types/redis": "^4.0.11",
     "nodemon": "^2.0.15",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.2"
@@ -39,7 +40,6 @@
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "graphql": "15.3.0",
-    "ioredis": "^4.28.2",
     "mongoose": "^6.1.0",
     "pg": "^8.7.1",
     "redis": "^4.0.0",

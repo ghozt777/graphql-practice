@@ -10,6 +10,7 @@ const userSchema = new mongoose_1.Schema({
     email: {
         type: String,
         required: "cant create a user without a username",
+        unique: "email is already registered",
     },
     password: {
         type: String,

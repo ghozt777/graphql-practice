@@ -8,6 +8,7 @@ const userSchema = new Schema(
     email: {
       type: String,
       required: "cant create a user without a username",
+      unique: "email is already registered",
     },
     password: {
       type: String,

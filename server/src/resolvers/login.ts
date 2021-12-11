@@ -22,7 +22,7 @@ export class LoginResolver {
       console.log("wrong password");
       return null;
     }
-    if (ctx.req.session) ctx.req.session.userId = _user.id;
+    ctx.req.session.userId = _user.id;
     return _user;
   }
 }

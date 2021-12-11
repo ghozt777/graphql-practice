@@ -9,15 +9,35 @@ import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/posts";
 import { CatResolver } from "./resolvers/cat";
 import { UserResolver } from "./resolvers/user";
-import connectRedis from "connect-redis";
-import session from "express-session";
-import { redis } from "./redis";
 import { LoginResolver } from "./resolvers/login";
 import { MeResolver } from "./resolvers/me";
+import { createClient } from "redis";
+import session from "express-session";
+import connectRedis from "connect-redis";
+import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 
 const main = async () => {
   connectToDB();
   const app = express();
+
+  const RedisStore = connectRedis(session as any);
+  const redisClient = createClient();
+
+  app.use(
+    session({
+      name: "qid", // name of the cookie
+      store: new RedisStore({ client: redisClient, disableTouch: true }) as any,
+      saveUninitialized: false,
+      secret: "keyboard cat",
+      resave: false,
+      cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
+        sameSite: "lax",
+        httpOnly: true,
+        secure: false,
+      },
+    })
+  );
 
   app.use(
     cors({
@@ -25,29 +45,7 @@ const main = async () => {
       credentials: true,
     })
   );
-
-  const RedisStore = connectRedis(session as any);
   app.set("trust proxy", 1);
-  app.use(
-    session({
-      store: new RedisStore({
-        client: redis as any,
-      }) as any,
-      name: "userId",
-      secret: process.env.SESSION_SECRET as string,
-      resave: false,
-      saveUninitialized: true,
-      cookie: {
-        domain:
-          process.env.NODE_ENV === "production"
-            ? ".client-app.now.sh"
-            : "localhost",
-        secure: process.env.NODE_ENV === "production",
-        httpOnly: true,
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      },
-    })
-  );
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
@@ -60,7 +58,12 @@ const main = async () => {
         MeResolver,
       ],
     }),
-    context: ({ req }) => ({ req }),
+    context: ({ req, res }) => ({ req, res }),
+    plugins: [
+      ApolloServerPluginLandingPageGraphQLPlayground({
+        // options
+      }),
+    ],
   });
 
   await apolloServer.start();
