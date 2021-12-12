@@ -1,21 +1,11 @@
 import { Box, Button } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
-import { useMutation } from "urql";
 import { InputField } from "../components/InputField";
 import Wrapper from "../components/Wrapper";
 import Link from "next/link";
+import { useRegisterMutation } from "../generated/graphql";
 
 interface registerProps {}
-
-const REGISTER_MUT = `
-mutation Register($data : RegisterInput!){
-    register(data : $data){
-      name ,
-      email ,
-      id ,
-    }
-  }
-`;
 
 type valueType = {
   email: string;
@@ -24,7 +14,7 @@ type valueType = {
 };
 
 const Register: React.FC<registerProps> = ({}) => {
-  const [, register] = useMutation(REGISTER_MUT);
+  const [, register] = useRegisterMutation();
 
   const handleSubmit = async (values: valueType): Promise<any> => {};
 
