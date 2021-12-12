@@ -3,27 +3,25 @@ import { Formik, Form } from "formik";
 import { useMutation } from "urql";
 import { InputField } from "../components/InputField";
 import Wrapper from "../components/Wrapper";
-import Link from "next/link";
 
 interface registerProps {}
 
-const REGISTER_MUT = `
-mutation Register($data : RegisterInput!){
-    register(data : $data){
-      name ,
-      email ,
-      id ,
-    }
+const LOGIN_MUT = `
+mutation Login($email :String! , $password :String!){
+  login(email : $email , password : $password){
+    name ,
+    id
   }
+}
 `;
 
-const Register: React.FC<registerProps> = ({}) => {
-  const [, register] = useMutation(REGISTER_MUT);
+const Login: React.FC<registerProps> = ({}) => {
+  const [, register] = useMutation(LOGIN_MUT);
   return (
     <Wrapper variant="small">
       <Formik
-        initialValues={{ email: "", password: "", name: "" }}
-        onSubmit={(values) => register({ data: { ...values } })}
+        initialValues={{ email: "", password: "" }}
+        onSubmit={(values) => register(values)}
       >
         {({ values, handleChange, isSubmitting }) => (
           <Form>
@@ -33,9 +31,6 @@ const Register: React.FC<registerProps> = ({}) => {
               label="email"
               type="email"
             />
-            <Box mt={4}>
-              <InputField name="name" placeholder="name" label="name" />
-            </Box>
             <Box mt={4}>
               <InputField
                 name="password"
@@ -53,11 +48,6 @@ const Register: React.FC<registerProps> = ({}) => {
             >
               Register
             </Button>
-            <Link href={"/login"}>
-              <Button ml={4} mt={4} colorScheme="teal" size="md">
-                Login
-              </Button>
-            </Link>
           </Form>
         )}
       </Formik>
@@ -65,4 +55,4 @@ const Register: React.FC<registerProps> = ({}) => {
   );
 };
 
-export default Register;
+export default Login;
