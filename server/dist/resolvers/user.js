@@ -21,6 +21,32 @@ const user_gql_1 = require("../graphql/user.gql");
 const type_graphql_1 = require("type-graphql");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const registerInput_1 = require("./args/registerInput");
+let FieldError = class FieldError {
+};
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", String)
+], FieldError.prototype, "field", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", String)
+], FieldError.prototype, "message", void 0);
+FieldError = __decorate([
+    (0, type_graphql_1.ObjectType)()
+], FieldError);
+let UserResponse = class UserResponse {
+};
+__decorate([
+    (0, type_graphql_1.Field)(() => [FieldError], { nullable: true }),
+    __metadata("design:type", Array)
+], UserResponse.prototype, "errors", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => user_gql_1.User, { nullable: true }),
+    __metadata("design:type", user_gql_1.User)
+], UserResponse.prototype, "user", void 0);
+UserResponse = __decorate([
+    (0, type_graphql_1.ObjectType)()
+], UserResponse);
 let UserResolver = class UserResolver {
     async users() {
         const users = await user_model_1.user.find({});

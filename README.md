@@ -1,2 +1,3 @@
-### IDK WTF I'm doin ....
-![meme](https://media4.giphy.com/media/o0vwzuFwCGAFO/giphy.gif?cid=ecf05e47cv1zez1brjw44sgzho5dlc3v5jy7d380xuapc34w&rid=giphy.gif&ct=g)
+### GraphQL Server + Client
+
+![gql](https://images.unsplash.com/photo-1516849841032-87cbac4d88f7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80)

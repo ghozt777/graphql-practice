@@ -17,8 +17,17 @@ mutation Register($data : RegisterInput!){
   }
 `;
 
+type valueType = {
+  email: string;
+  password: string;
+  name: string;
+};
+
 const Register: React.FC<registerProps> = ({}) => {
   const [, register] = useMutation(REGISTER_MUT);
+
+  const handleSubmit = async (values: valueType): Promise<any> => {};
+
   return (
     <Wrapper variant="small">
       <Formik
