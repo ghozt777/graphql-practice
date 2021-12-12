@@ -13,7 +13,7 @@ const Register: React.FC<registerProps> = ({}) => {
         onSubmit={(values) => console.log(values)}
       >
         {({ values, handleChange, isSubmitting }) => (
-          <Form>
+          <Form> 
             <InputField
               name="username"
               placeholder="username"
