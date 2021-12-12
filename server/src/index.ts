@@ -44,7 +44,7 @@ const main = async () => {
 
   app.use(
     cors({
-      origin: "*",
+      origin: "http://localhost:3000",
       credentials: true,
     })
   );
@@ -72,8 +72,8 @@ const main = async () => {
   });
 
   await apolloServer.start();
-  apolloServer.applyMiddleware({ app, cors: false });
-
+  apolloServer.applyMiddleware({ app, cors: false }); // cors here is set to false as we are manually handling it and dont need apollo to handle it
+  // if we dont want the to use cors use can just use the one from apollo and set the origin to http://localhost:3000 or the client origin that will enable us to set cookie in the client browser
   app.listen(process.env.PORT, () =>
     console.log(
       `server is running on http://localhost:${process.env.PORT}/graphql`

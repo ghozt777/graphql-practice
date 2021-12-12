@@ -42,7 +42,7 @@ const main = async () => {
         },
     }));
     app.use((0, cors_1.default)({
-        origin: "*",
+        origin: "http://localhost:3000",
         credentials: true,
     }));
     app.set("trust proxy", 1);

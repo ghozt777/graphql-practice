@@ -5,6 +5,9 @@ import theme from "../theme";
 
 const client = createClient({
   url: "http://localhost:5000/graphql",
+  fetchOptions: {
+    credentials: "include",
+  },
 });
 
 function MyApp({ Component, pageProps }) {
