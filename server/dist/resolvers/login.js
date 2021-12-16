@@ -47,14 +47,22 @@ UserResponse = __decorate([
     (0, type_graphql_1.ObjectType)()
 ], UserResponse);
 let LoginResolver = class LoginResolver {
-    async login(email, password, ctx) {
-        const _user = await user_model_1.user.findOne({ email });
+    async login(usernameOrEmail, password, ctx) {
+        const _user = await user_model_1.user.findOne(usernameOrEmail.includes("@")
+            ? {
+                email: usernameOrEmail,
+            }
+            : {
+                name: usernameOrEmail,
+            });
         if (!_user) {
             return {
                 errors: [
                     {
-                        field: "email",
-                        message: `email : ${email} is not registered`,
+                        field: "usernameOrEmail",
+                        message: usernameOrEmail.includes("@")
+                            ? `email : ${usernameOrEmail} is not registered`
+                            : `username : ${usernameOrEmail} is not registered`,
                     },
                 ],
             };
@@ -79,7 +87,7 @@ let LoginResolver = class LoginResolver {
 };
 __decorate([
     (0, type_graphql_1.Mutation)(() => UserResponse),
-    __param(0, (0, type_graphql_1.Arg)("email")),
+    __param(0, (0, type_graphql_1.Arg)("usernameOrEmail")),
     __param(1, (0, type_graphql_1.Arg)("password")),
     __param(2, (0, type_graphql_1.Ctx)()),
     __metadata("design:type", Function),

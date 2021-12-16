@@ -18,7 +18,6 @@ const type_graphql_1 = require("type-graphql");
 const post_model_1 = require("../models/post.model");
 const user_model_1 = require("../models/user.model");
 const postInput_1 = require("./args/postInput");
-const sleep = (ms) => new Promise((res, _) => setTimeout(res, ms));
 let Post = class Post {
 };
 __decorate([

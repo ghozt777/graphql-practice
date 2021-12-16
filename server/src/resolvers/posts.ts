@@ -11,8 +11,7 @@ import {
 import { post } from "../models/post.model";
 import { user } from "../models/user.model";
 import { PostInput } from "./args/postInput";
-
-const sleep = (ms: number) => new Promise((res, _) => setTimeout(res, ms));
+// import { sleep } from "../utils/sleep";
 
 @ObjectType()
 class Post {

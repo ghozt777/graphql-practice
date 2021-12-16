@@ -26,17 +26,27 @@ class UserResponse {
 export class LoginResolver {
   @Mutation(() => UserResponse)
   async login(
-    @Arg("email") email: string,
+    @Arg("usernameOrEmail") usernameOrEmail: string,
     @Arg("password") password: string,
     @Ctx() ctx: MyContext
   ): Promise<UserResponse> {
-    const _user = await user.findOne({ email });
+    const _user = await user.findOne(
+      usernameOrEmail.includes("@")
+        ? {
+            email: usernameOrEmail,
+          }
+        : {
+            name: usernameOrEmail,
+          }
+    );
     if (!_user) {
       return {
         errors: [
           {
-            field: "email",
-            message: `email : ${email} is not registered`,
+            field: "usernameOrEmail",
+            message: usernameOrEmail.includes("@")
+              ? `email : ${usernameOrEmail} is not registered`
+              : `username : ${usernameOrEmail} is not registered`,
           },
         ],
       };

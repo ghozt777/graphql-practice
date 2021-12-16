@@ -1,12 +1,16 @@
+import GraphqlSvg from "../assets/graphql.svg";
 import { Box, Button, Text, Flex, Link, Image } from "@chakra-ui/react";
 import { HashLoader } from "react-spinners";
 import { useLogoutMutation, useMeQuery } from "../generated/graphql";
-import GraphqlSvg from "../assets/graphql.svg";
+import { isServer } from "../utils/isServer";
 
 interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = () => {
-  const [{ data, fetching }] = useMeQuery();
+  // since next.js dosen't have a cookie : on the inital render the me query is going to return null
+  const [{ data, fetching }] = useMeQuery({
+    pause: isServer(), // dont make a query if we are on the server
+  });
   const [{ fetching: logoutFetching }, logout] = useLogoutMutation();
   let body = null;
   if (fetching) {

@@ -64,8 +64,8 @@ export type MutationGetLaidArgs = {
 
 
 export type MutationLoginArgs = {
-  email: Scalars['String'];
   password: Scalars['String'];
+  usernameOrEmail: Scalars['String'];
 };
 
 
@@ -118,7 +118,7 @@ export type UserResponse = {
 export type RegularUserFragment = { __typename?: 'User', id: string, name: string, email: string };
 
 export type LoginMutationVariables = Exact<{
-  email: Scalars['String'];
+  usernameOrEmail: Scalars['String'];
   password: Scalars['String'];
 }>;
 
@@ -155,8 +155,8 @@ export const RegularUserFragmentDoc = gql`
 }
     `;
 export const LoginDocument = gql`
-    mutation Login($email: String!, $password: String!) {
-  login(email: $email, password: $password) {
+    mutation Login($usernameOrEmail: String!, $password: String!) {
+  login(usernameOrEmail: $usernameOrEmail, password: $password) {
     errors {
       field
       message

@@ -11,7 +11,7 @@ import { createUrqlClient } from "../utils/createUrqlClient";
 interface registerProps {}
 
 type loginValues = {
-  email: string;
+  usernameOrEmail: string;
   password: string;
 };
 
@@ -31,16 +31,16 @@ const Login: React.FC<registerProps> = ({}) => {
     <Wrapper variant="small">
       <Toast />
       <Formik
-        initialValues={{ email: "", password: "" }}
+        initialValues={{ usernameOrEmail: "", password: "" }}
         onSubmit={(values, { setErrors }) => handleSubmit(values, setErrors)}
       >
         {({ values, handleChange, isSubmitting }) => (
           <Form>
             <InputField
-              name="email"
-              placeholder="email"
-              label="email"
-              type="email"
+              name="usernameOrEmail"
+              placeholder="username or email"
+              label="Username or Email"
+              type="text"
             />
             <Box mt={4}>
               <InputField

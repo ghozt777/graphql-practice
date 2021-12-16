@@ -1,9 +1,9 @@
 import { Badge, Box, Flex, Text } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
+import { HashLoader } from "react-spinners";
 import { NavBar } from "../components/NavBar";
 import { PostsQuery, usePostsQuery } from "../generated/graphql";
 import { createUrqlClient } from "../utils/createUrqlClient";
-import { HashLoader } from "react-spinners";
 
 interface PostsProps {
   data: PostsQuery;
@@ -77,16 +77,19 @@ const Index = () => {
         alignItems={"center"}
         justifyContent={"space-evenly"}
       >
-        {/* {fetching ? (
+        {fetching ? (
           <HashLoader color="black" size={"100"} />
         ) : (
           <Posts data={data} />
-        )} */}
-        {/* With server side rendering enabled we dont need to add a loader as it will never be used */}
-        <Posts data={data} />
+        )}
       </Flex>
     </Box>
   );
 };
 
 export default withUrqlClient(createUrqlClient, { ssr: true })(Index); // ssr is enabled
+/* ----- Notes ------ :  
+  ssr is recommended for SEO
+  if ssr is not enabled the JS is not evaluated and it produces HTML page with loader and not the network fetched content
+  in next.js the pages after the inital load are not Server Side Rendered even if ssr is enabled and it will do client side rendering
+*/
