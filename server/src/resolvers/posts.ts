@@ -1,31 +1,56 @@
-import { Field, ObjectType, Query, Resolver } from "type-graphql";
+import { User } from "../graphql/user.gql";
+import {
+  Arg,
+  Field,
+  ID,
+  Mutation,
+  ObjectType,
+  Query,
+  Resolver,
+} from "type-graphql";
+import { post } from "../models/post.model";
+import { user } from "../models/user.model";
+import { PostInput } from "./args/postInput";
 
 @ObjectType()
 class Post {
   @Field() // we dont need to mention the type for string and int as it is infered
-  name: String;
+  title: String;
+
+  @Field(() => ID)
+  _id: String;
+
+  @Field(() => User)
+  author: User;
 
   @Field()
-  _id: number;
-
-  @Field(() => Date) // for some datatype like Date we need to mention the type
-  date: Date;
-
-  @Field(() => Boolean)
-  flag: boolean;
+  content: String;
 }
 
 @Resolver()
 export class PostResolver {
-  @Query(() => [Post])
-  posts(): Array<Post> {
-    return [
-      {
-        name: "This is a test",
-        _id: 1234,
-        date: new Date(),
-        flag: false,
-      },
-    ];
+  @Query(() => [Post], { nullable: true })
+  async posts() {
+    const posts = await post.find({}).populate({
+      path: "author",
+      select: "_id name email",
+    });
+    return posts;
+  }
+
+  @Mutation(() => Boolean, { nullable: true })
+  async createPost(@Arg("data") { email, title, content }: PostInput) {
+    try {
+      const foundUser = await user.findOne({ email });
+      await new post({
+        title,
+        content,
+        author: foundUser,
+      }).save();
+      return true;
+    } catch (e) {
+      console.log(e.message);
+      return false;
+    }
   }
 }

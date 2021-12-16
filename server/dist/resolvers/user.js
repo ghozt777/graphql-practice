@@ -61,6 +61,17 @@ let UserResolver = class UserResolver {
         }).save();
         return savedUser;
     }
+    async logout(ctx) {
+        return new Promise((res) => ctx.req.session.destroy((err) => {
+            ctx.res.clearCookie("qid");
+            if (err) {
+                console.log(err);
+                res(false);
+            }
+            else
+                res(true);
+        }));
+    }
 };
 __decorate([
     (0, type_graphql_1.Query)(() => [user_gql_1.User]),
@@ -75,6 +86,13 @@ __decorate([
     __metadata("design:paramtypes", [registerInput_1.RegisterInput]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "register", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => Boolean),
+    __param(0, (0, type_graphql_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserResolver.prototype, "logout", null);
 UserResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], UserResolver);

@@ -58,7 +58,7 @@ const Login: React.FC<registerProps> = ({}) => {
               type="submit"
               isLoading={isSubmitting}
             >
-              Register
+              Login
             </Button>
           </Form>
         )}
