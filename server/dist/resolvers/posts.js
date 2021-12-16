@@ -42,7 +42,6 @@ Post = __decorate([
 ], Post);
 let PostResolver = class PostResolver {
     async posts() {
-        await sleep(3000);
         const posts = await post_model_1.post.find({}).populate({
             path: "author",
             select: "_id name email",

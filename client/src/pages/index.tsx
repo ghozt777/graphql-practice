@@ -45,14 +45,23 @@ const Post: React.FC<PostProps> = ({ title, author, content }) => (
 );
 
 const Posts: React.FC<PostsProps> = (data) => {
-  const  posts  = data.data.posts;
+  const posts = data.data.posts;
 
   return (
-    <>
+    <Flex
+      mt={"5rem"}
+      minHeight={"100%"}
+      mb={"0"}
+      width={"100%"}
+      alignItems={"center"}
+      overflowY={"scroll"}
+      flexDirection={"column"}
+      gap={"2rem"}
+    >
       {posts.map(({ title, content, author }) => {
         return <Post title={title} content={content} author={author} />;
       })}
-    </>
+    </Flex>
   );
 };
 
@@ -68,14 +77,16 @@ const Index = () => {
         alignItems={"center"}
         justifyContent={"space-evenly"}
       >
-        {fetching ? (
+        {/* {fetching ? (
           <HashLoader color="black" size={"100"} />
         ) : (
           <Posts data={data} />
-        )}
+        )} */}
+        {/* With server side rendering enabled we dont need to add a loader as it will never be used */}
+        <Posts data={data} />
       </Flex>
     </Box>
   );
 };
 
-export default withUrqlClient(createUrqlClient)(Index);
+export default withUrqlClient(createUrqlClient, { ssr: true })(Index); // ssr is enabled

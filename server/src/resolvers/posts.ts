@@ -33,7 +33,7 @@ class Post {
 export class PostResolver {
   @Query(() => [Post], { nullable: true })
   async posts() {
-    await sleep(3000); // creating an artificial delay
+    // await sleep(3000); // creating an artificial delay
     const posts = await post.find({}).populate({
       path: "author",
       select: "_id name email",
