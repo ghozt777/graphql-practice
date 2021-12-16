@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.IsEmailAlreadyExist = exports.IsEmailAlreadyExistConstraint = void 0;
+exports.IsEmailRegistered = exports.IsEmailRegisteredConstraint = exports.IsEmailAlreadyExist = exports.IsEmailAlreadyExistConstraint = void 0;
 const class_validator_1 = require("class-validator");
 const user_model_1 = require("../../models/user.model");
 let IsEmailAlreadyExistConstraint = class IsEmailAlreadyExistConstraint {
@@ -34,4 +34,29 @@ function IsEmailAlreadyExist(validationOptions) {
     };
 }
 exports.IsEmailAlreadyExist = IsEmailAlreadyExist;
+let IsEmailRegisteredConstraint = class IsEmailRegisteredConstraint {
+    async validate(email) {
+        const isThere = await user_model_1.user.findOne({ email });
+        if (isThere)
+            return true;
+        else
+            return false;
+    }
+};
+IsEmailRegisteredConstraint = __decorate([
+    (0, class_validator_1.ValidatorConstraint)({ async: true })
+], IsEmailRegisteredConstraint);
+exports.IsEmailRegisteredConstraint = IsEmailRegisteredConstraint;
+function IsEmailRegistered(validationOptions) {
+    return function (object, propertyName) {
+        (0, class_validator_1.registerDecorator)({
+            target: object.constructor,
+            propertyName: propertyName,
+            options: validationOptions,
+            constraints: [],
+            validator: IsEmailRegisteredConstraint,
+        });
+    };
+}
+exports.IsEmailRegistered = IsEmailRegistered;
 //# sourceMappingURL=isEmailThere.js.map

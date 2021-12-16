@@ -32,3 +32,26 @@ export function IsEmailAlreadyExist(validationOptions?: ValidationOptions) {
     });
   };
 }
+
+@ValidatorConstraint({ async: true })
+export class IsEmailRegisteredConstraint
+  implements ValidatorConstraintInterface
+{
+  async validate(email: string) {
+    const isThere = await user.findOne({ email });
+    if (isThere) return true;
+    else return false;
+  }
+}
+
+export function IsEmailRegistered(validationOptions?: ValidationOptions) {
+  return function (object: Object, propertyName: string) {
+    registerDecorator({
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      constraints: [],
+      validator: IsEmailRegisteredConstraint,
+    });
+  };
+}
