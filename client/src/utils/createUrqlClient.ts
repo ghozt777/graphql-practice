@@ -27,7 +27,7 @@ export const createUrqlClient = (ssrExchange: any) => ({
                 if (!result.login) return query;
                 else {
                   return {
-                    me: result.login,
+                    me: result.login.user,
                   };
                 }
               }

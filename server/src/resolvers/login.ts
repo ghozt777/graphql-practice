@@ -36,7 +36,7 @@ export class LoginResolver {
         errors: [
           {
             field: "email",
-            message: `email : ${email} dosen't exists`,
+            message: `email : ${email} is not registered`,
           },
         ],
       };
