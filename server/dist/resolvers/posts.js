@@ -13,32 +13,11 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostResolver = void 0;
-const user_gql_1 = require("../graphql/user.gql");
 const type_graphql_1 = require("type-graphql");
 const post_model_1 = require("../models/post.model");
 const user_model_1 = require("../models/user.model");
 const postInput_1 = require("./args/postInput");
-let Post = class Post {
-};
-__decorate([
-    (0, type_graphql_1.Field)(),
-    __metadata("design:type", String)
-], Post.prototype, "title", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => type_graphql_1.ID),
-    __metadata("design:type", String)
-], Post.prototype, "_id", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => user_gql_1.User),
-    __metadata("design:type", user_gql_1.User)
-], Post.prototype, "author", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(),
-    __metadata("design:type", String)
-], Post.prototype, "content", void 0);
-Post = __decorate([
-    (0, type_graphql_1.ObjectType)()
-], Post);
+const post_gql_1 = require("../graphql/post.gql");
 let PostResolver = class PostResolver {
     async posts() {
         const posts = await post_model_1.post.find({}).populate({
@@ -64,7 +43,7 @@ let PostResolver = class PostResolver {
     }
 };
 __decorate([
-    (0, type_graphql_1.Query)(() => [Post], { nullable: true }),
+    (0, type_graphql_1.Query)(() => [post_gql_1.Post], { nullable: true }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

@@ -11,22 +11,8 @@ import {
 import { post } from "../models/post.model";
 import { user } from "../models/user.model";
 import { PostInput } from "./args/postInput";
+import { Post } from "../graphql/post.gql";
 // import { sleep } from "../utils/sleep";
-
-@ObjectType()
-class Post {
-  @Field() // we dont need to mention the type for string and int as it is infered
-  title: String;
-
-  @Field(() => ID)
-  _id: String;
-
-  @Field(() => User)
-  author: User;
-
-  @Field()
-  content: String;
-}
 
 @Resolver()
 export class PostResolver {
