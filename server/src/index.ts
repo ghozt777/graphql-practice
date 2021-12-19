@@ -18,10 +18,10 @@ import { LoginResolver } from "./resolvers/login";
 import { HelloResolver } from "./resolvers/hello";
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
+import { ForgotPasswordResolver } from "./resolvers/forgotPassword";
 
 const main = async () => {
   connectToDB();
-
   const app = express();
   const RedisStore = connectRedis(session as any);
   const redis = new Redis();
@@ -61,9 +61,10 @@ const main = async () => {
         LoginResolver,
         MeResolver,
         DemoResolver,
+        ForgotPasswordResolver,
       ],
     }),
-    context: ({ req, res }) => ({ req, res }),
+    context: ({ req, res }) => ({ req, res, redis }),
     plugins: [
       ApolloServerPluginLandingPageGraphQLPlayground({
         // options

@@ -8,7 +8,6 @@ export class MeResolver {
   @Query(() => User, { nullable: true })
   async me(@Ctx() ctx: MyContext): Promise<User | null> {
     const id = ctx.req.session.userId;
-    // if there is no userID its gonna search in the DB and return null so we I didn't explicitly handled it
     try {
       const me = await user.findById(id);
       return me;
@@ -17,6 +16,6 @@ export class MeResolver {
       if (e instanceof Error) message = "error : " + e.message;
       console.error(message);
       return null;
-    } 
+    }
   }
 }

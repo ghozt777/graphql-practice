@@ -2,7 +2,9 @@ import { User } from "../graphql/user.gql";
 import { user } from "../models/user.model";
 import { Arg, Ctx, Field, Mutation, ObjectType, Resolver } from "type-graphql";
 import bcrypt from "bcryptjs";
-import { MyContext } from "src/types/myContext";
+import { MyContext } from "../types/myContext";
+import { FORGET_PASSWORD_PREFIX } from "../constraints";
+import { isJWT } from "class-validator";
 
 @ObjectType()
 class FieldError {
@@ -26,17 +28,27 @@ class UserResponse {
 export class LoginResolver {
   @Mutation(() => UserResponse)
   async login(
-    @Arg("email") email: string,
+    @Arg("usernameOrEmail") usernameOrEmail: string,
     @Arg("password") password: string,
     @Ctx() ctx: MyContext
   ): Promise<UserResponse> {
-    const _user = await user.findOne({ email });
+    const _user = await user.findOne(
+      usernameOrEmail.includes("@")
+        ? {
+            email: usernameOrEmail,
+          }
+        : {
+            name: usernameOrEmail,
+          }
+    );
     if (!_user) {
       return {
         errors: [
           {
-            field: "email",
-            message: `email : ${email} is not registered`,
+            field: "usernameOrEmail",
+            message: usernameOrEmail.includes("@")
+              ? `email : ${usernameOrEmail} is not registered`
+              : `username : ${usernameOrEmail} is not registered`,
           },
         ],
       };
@@ -56,6 +68,42 @@ export class LoginResolver {
     ctx.req.session.userId = _user.id;
     return {
       user: _user,
+    };
+  }
+
+  @Mutation(() => UserResponse)
+  async changePassword(
+    @Arg("token") token: string,
+    @Arg("newPassword") newPassword: string,
+    @Ctx() { redis }: MyContext
+  ): Promise<UserResponse> {
+    const userId = await redis.get(FORGET_PASSWORD_PREFIX + token);
+    if (!userId) {
+      return {
+        errors: [
+          {
+            field: "token",
+            message: "token expired !",
+          },
+        ],
+      };
+    }
+
+    const _user = await user.findById(userId);
+    if (!_user) {
+      return {
+        errors: [
+          {
+            field: "token",
+            message: "user dosen't exsist",
+          },
+        ],
+      };
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+    _user.password = hashedPassword;
+    return {
+      user: await _user.save(),
     };
   }
 }

@@ -1,53 +1,21 @@
-import { Box, Text, Flex, Button } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import { withUrqlClient } from "next-urql";
 import { NavBar } from "../components/NavBar";
-import graphQLSVG from "../assets/graphql.svg";
-import Link from "next/link";
-import Image from "next/image";
-import { useLogoutMutation, useMeQuery } from "../generated/graphql";
-import { HashLoader } from "react-spinners";
-import { withUrqlClient } from 'next-urql';
+import { PostsDisplay } from "../components/PostsDisplay";
 import { createUrqlClient } from "../utils/createUrqlClient";
+
 const Index = () => {
-  const [{ data, fetching }] = useMeQuery();
-  const [{ fetching: logoutFetching }, logout] = useLogoutMutation();
-  let body = null;
-  if (fetching) {
-    body = <HashLoader color="white" size={40} />;
-  } else if (!data?.me) {
-    body = (
-      <Flex gap={"4"} alignItems={"center"} mr={4}>
-        <Link href="/register">Register</Link>
-        <Link href="/login">Login</Link>
-      </Flex>
-    );
-  } else {
-    body = (
-      <>
-        <Text>
-          <small>Signed in as</small> : {data.me.name}
-        </Text>
-        <Button
-          variant={"outline"}
-          colorScheme={"pink"}
-          onClick={() => logout()}
-          isLoading={logoutFetching}
-        >
-          Logout
-        </Button>
-      </>
-    );
-  }
   return (
-    <Box h="100%" w="100%">
-      <NavBar>
-        <Flex gap={"4"} alignItems={"center"}>
-          <Text>GraphQL Practice</Text>
-          <Image src={graphQLSVG} width="40px" height="40px" />
-        </Flex>
-        {body}
-      </NavBar>
+    <Box h="100vh" w="100%">
+      <NavBar />
+      <PostsDisplay />
     </Box>
   );
 };
 
-export default withUrqlClient(createUrqlClient)(Index);
+export default withUrqlClient(createUrqlClient, { ssr: true })(Index); // ssr is enabled
+/* ----- Notes ------ :  
+  ssr is recommended for SEO
+  if ssr is not enabled the JS is not evaluated and it produces HTML page with loader and not the network fetched content
+  in next.js the pages after the inital load are not Server Side Rendered even if ssr is enabled and it will do client side rendering
+*/
