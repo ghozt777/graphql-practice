@@ -2,9 +2,61 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { NextPage } from "next";
 import { InputField } from "../../components/InputField";
+import { useChangePasswordMutation } from "../../generated/graphql";
+import { FormikErrors } from "formik";
+import { Toast, errorToast, successToast } from "../../components/Toast";
+import { useRouter } from "next/router";
+import { withUrqlClient } from "next-urql";
+import { createUrqlClient } from "../../utils/createUrqlClient";
 
 const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
-  console.log(token);
+  const [, changePassword] = useChangePasswordMutation();
+  const router = useRouter();
+  const handleSubmit = async (
+    values: {
+      password: string;
+      confirmPassword: string;
+    },
+    setErrors: (
+      errors: FormikErrors<{
+        password: string;
+        confirmPassword: string;
+      }>
+    ) => void
+  ) => {
+    if (values.password.length < 8) {
+      setErrors({
+        password: "password length must be greater than 8 characters !",
+      });
+      return;
+    }
+    if (values.password !== values.confirmPassword) {
+      setErrors({
+        confirmPassword: "the passwords don't match !",
+      });
+      return;
+    }
+    const response = await changePassword({
+      newPassword: values.confirmPassword,
+      token,
+    });
+
+    if (response.data.changePassword.errors) {
+      response.data.changePassword.errors.map((err) =>
+        errorToast(" in " + err.field + " : " + err.message)
+      );
+    } else {
+      successToast(
+        "password chnaged successfully for : " +
+          response.data.changePassword.user.name +
+          " with email : " +
+          response.data.changePassword.user.email
+      );
+      successToast("Redirecting in 3s ...");
+      setTimeout(() => router.push("/"), 3000);
+    }
+  };
+
   return (
     <Flex
       h={"100vh"}
@@ -12,22 +64,10 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
       alignItems={"flex-start"}
       justifyContent={"center"}
     >
+      <Toast />
       <Formik
         initialValues={{ password: "", confirmPassword: "" }}
-        onSubmit={(values, { setErrors }) => {
-          if (values.password.length < 8) {
-            setErrors({
-              password: "password length must be greater than 8 characters !",
-            });
-            return;
-          }
-          if (values.password !== values.confirmPassword) {
-            setErrors({
-              confirmPassword: "the passwords don't match !",
-            });
-            return;
-          }
-        }}
+        onSubmit={(values, { setErrors }) => handleSubmit(values, setErrors)}
       >
         {({ values, handleChange, isSubmitting }) => (
           <Form>
@@ -72,4 +112,4 @@ ChangePassword.getInitialProps = ({ query }) => {
   };
 };
 
-export default ChangePassword;
+export default withUrqlClient(createUrqlClient)(ChangePassword);

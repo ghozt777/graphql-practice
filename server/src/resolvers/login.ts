@@ -4,7 +4,6 @@ import { Arg, Ctx, Field, Mutation, ObjectType, Resolver } from "type-graphql";
 import bcrypt from "bcryptjs";
 import { MyContext } from "../types/myContext";
 import { FORGET_PASSWORD_PREFIX } from "../constraints";
-import { isJWT } from "class-validator";
 
 @ObjectType()
 class FieldError {
@@ -75,7 +74,7 @@ export class LoginResolver {
   async changePassword(
     @Arg("token") token: string,
     @Arg("newPassword") newPassword: string,
-    @Ctx() { redis }: MyContext
+    @Ctx() { redis, req }: MyContext
   ): Promise<UserResponse> {
     const userId = await redis.get(FORGET_PASSWORD_PREFIX + token);
     if (!userId) {
@@ -102,6 +101,7 @@ export class LoginResolver {
     }
     const hashedPassword = await bcrypt.hash(newPassword, 12);
     _user.password = hashedPassword;
+    req.session.userId = _user.id; // save the session for the user
     return {
       user: await _user.save(),
     };
