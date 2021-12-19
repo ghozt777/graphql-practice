@@ -20,6 +20,7 @@ const user_gql_1 = require("../graphql/user.gql");
 const user_model_1 = require("../models/user.model");
 const type_graphql_1 = require("type-graphql");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const constraints_1 = require("../constraints");
 let FieldError = class FieldError {
 };
 __decorate([
@@ -84,6 +85,35 @@ let LoginResolver = class LoginResolver {
             user: _user,
         };
     }
+    async changePassword(token, newPassword, { redis }) {
+        const userId = await redis.get(constraints_1.FORGET_PASSWORD_PREFIX + token);
+        if (!userId) {
+            return {
+                errors: [
+                    {
+                        field: "token",
+                        message: "token expired !",
+                    },
+                ],
+            };
+        }
+        const _user = await user_model_1.user.findById(userId);
+        if (!_user) {
+            return {
+                errors: [
+                    {
+                        field: "token",
+                        message: "user dosen't exsist",
+                    },
+                ],
+            };
+        }
+        const hashedPassword = await bcryptjs_1.default.hash(newPassword, 12);
+        _user.password = hashedPassword;
+        return {
+            user: await _user.save(),
+        };
+    }
 };
 __decorate([
     (0, type_graphql_1.Mutation)(() => UserResponse),
@@ -94,6 +124,15 @@ __decorate([
     __metadata("design:paramtypes", [String, String, Object]),
     __metadata("design:returntype", Promise)
 ], LoginResolver.prototype, "login", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => UserResponse),
+    __param(0, (0, type_graphql_1.Arg)("token")),
+    __param(1, (0, type_graphql_1.Arg)("newPassword")),
+    __param(2, (0, type_graphql_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, Object]),
+    __metadata("design:returntype", Promise)
+], LoginResolver.prototype, "changePassword", null);
 LoginResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], LoginResolver);

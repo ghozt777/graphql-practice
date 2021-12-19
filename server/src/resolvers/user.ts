@@ -11,7 +11,8 @@ import {
 } from "type-graphql";
 import bcrypt from "bcryptjs";
 import { RegisterInput } from "./args/registerInput";
-import { MyContext } from "src/types/myContext";
+import { MyContext } from "../types/myContext";
+import { FORGET_PASSWORD_PREFIX } from "../constraints";
 
 @ObjectType()
 class FieldError {
@@ -64,4 +65,5 @@ export class UserResolver {
       })
     );
   }
+  
 }

@@ -3,7 +3,6 @@ import { Box, Button } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { InputField } from "../components/InputField";
 import { useLoginMutation } from "../generated/graphql";
-import { Toast, errorToast, successToast } from "../components/Toast";
 import { useRouter } from "next/router";
 import { toErrorMap } from "../utils/toErrorMap";
 import { withUrqlClient } from "next-urql";
@@ -29,7 +28,6 @@ const Login: React.FC<registerProps> = ({}) => {
   };
   return (
     <Wrapper variant="small">
-      <Toast />
       <Formik
         initialValues={{ usernameOrEmail: "", password: "" }}
         onSubmit={(values, { setErrors }) => handleSubmit(values, setErrors)}
