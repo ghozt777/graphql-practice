@@ -23,6 +23,7 @@ const login_1 = require("./resolvers/login");
 const hello_1 = require("./resolvers/hello");
 const apollo_server_express_1 = require("apollo-server-express");
 const apollo_server_core_1 = require("apollo-server-core");
+const forgotPassword_1 = require("./resolvers/forgotPassword");
 const main = async () => {
     (0, db_connect_1.default)();
     const app = (0, express_1.default)();
@@ -56,9 +57,10 @@ const main = async () => {
                 login_1.LoginResolver,
                 me_1.MeResolver,
                 Demo_1.DemoResolver,
+                forgotPassword_1.ForgotPasswordResolver,
             ],
         }),
-        context: ({ req, res }) => ({ req, res }),
+        context: ({ req, res }) => ({ req, res, redis }),
         plugins: [
             (0, apollo_server_core_1.ApolloServerPluginLandingPageGraphQLPlayground)({}),
         ],
