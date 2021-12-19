@@ -86,7 +86,8 @@ let LoginResolver = class LoginResolver {
         };
     }
     async changePassword(token, newPassword, { redis, req }) {
-        const userId = await redis.get(constraints_1.FORGET_PASSWORD_PREFIX + token);
+        const key = constraints_1.FORGET_PASSWORD_PREFIX + token;
+        const userId = await redis.get(key);
         if (!userId) {
             return {
                 errors: [
@@ -111,6 +112,7 @@ let LoginResolver = class LoginResolver {
         const hashedPassword = await bcryptjs_1.default.hash(newPassword, 12);
         _user.password = hashedPassword;
         req.session.userId = _user.id;
+        await redis.del(key);
         return {
             user: await _user.save(),
         };

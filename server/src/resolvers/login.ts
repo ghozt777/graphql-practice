@@ -76,7 +76,8 @@ export class LoginResolver {
     @Arg("newPassword") newPassword: string,
     @Ctx() { redis, req }: MyContext
   ): Promise<UserResponse> {
-    const userId = await redis.get(FORGET_PASSWORD_PREFIX + token);
+    const key = FORGET_PASSWORD_PREFIX + token;
+    const userId = await redis.get(key);
     if (!userId) {
       return {
         errors: [
@@ -102,6 +103,7 @@ export class LoginResolver {
     const hashedPassword = await bcrypt.hash(newPassword, 12);
     _user.password = hashedPassword;
     req.session.userId = _user.id; // save the session for the user
+    await  redis.del(key); // delete the token
     return {
       user: await _user.save(),
     };
